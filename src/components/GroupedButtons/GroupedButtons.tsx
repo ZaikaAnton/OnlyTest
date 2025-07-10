@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 import Typography from "../Typography";
 import ButtonEllipse from "../ButtonEllipse";
 
 interface GroupedButtonsProps {
-  title: string;
+  currentIndex: number;
+  itemsLength: number;
   prevDisabled?: boolean;
   nextDisabled?: boolean;
   onPrevClick?: () => void;
@@ -13,17 +14,22 @@ interface GroupedButtonsProps {
 
 const GroupedButtons = React.memo(
   ({
-    title,
+    currentIndex,
+    itemsLength,
     onPrevClick,
     onNextClick,
     prevDisabled = false,
     nextDisabled = false,
   }: GroupedButtonsProps) => {
+    const formattedTitle = useMemo(() => {
+      return `${String(currentIndex + 1).padStart(2, "0")}/${String(
+        itemsLength
+      ).padStart(2, "0")}`;
+    }, [currentIndex, itemsLength]);
+
     return (
       <Container>
-        {/* <TitleWrapper> */}
-        <Typography variant="button">{title}</Typography>
-        {/* </TitleWrapper> */}
+        <Typography variant="button">{formattedTitle}</Typography>
 
         <ButtonsWrapper>
           <ButtonEllipse onClick={onPrevClick} disabled={prevDisabled}>
@@ -45,6 +51,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.space(2.5)};
   width: fit-content;
+  z-index: 1;
 `;
 
 const ButtonsWrapper = styled.div`
@@ -52,7 +59,3 @@ const ButtonsWrapper = styled.div`
   gap: ${({ theme }) => theme.space(2.5)};
   width: 100%;
 `;
-
-// const TitleWrapper = styled.div`
-//   align-self: flex-end;
-// `;

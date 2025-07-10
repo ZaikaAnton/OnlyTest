@@ -1,19 +1,22 @@
 import styled, { css } from "styled-components";
-import React, { ReactNode } from "react";
+import React, { forwardRef, ReactNode } from "react";
 
 interface ButtonEllipseProps {
   children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  className?: string;
 }
 
-const ButtonEllipse = React.memo(
-  ({ children, onClick, disabled = false }: ButtonEllipseProps) => {
+const ButtonEllipse = forwardRef<HTMLButtonElement, ButtonEllipseProps>(
+  ({ children, onClick, disabled = false, className }, ref) => {
     return (
       <StyledButton
+        ref={ref}
         onClick={disabled ? undefined : onClick}
         $disabled={disabled}
         aria-disabled={disabled}
+        className={className}
       >
         {children}
       </StyledButton>
@@ -21,7 +24,7 @@ const ButtonEllipse = React.memo(
   }
 );
 
-export default ButtonEllipse;
+export default React.memo(ButtonEllipse);
 
 const StyledButton = styled.button<{ $disabled?: boolean }>`
   width: 50px;

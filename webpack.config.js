@@ -10,9 +10,6 @@ module.exports = {
     clean: true,
   },
   resolve: {
-    // alias: {
-    //   "@": path.resolve(__dirname, "src"),
-    // },
     extensions: [".tsx", ".ts", ".js"],
     plugins: [new TsconfigPathsPlugin()],
   },
@@ -22,6 +19,10 @@ module.exports = {
         test: /\.tsx?$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
       },
     ],
   },

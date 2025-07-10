@@ -1,24 +1,30 @@
 import styled from "styled-components";
-import React, { ReactNode } from "react";
+import React, { forwardRef, ReactNode } from "react";
 import { ThemeColor, TypographyVariant } from "@/shared/styles/theme";
 
 interface TypographyProps {
   children: ReactNode;
   variant?: TypographyVariant;
   color?: ThemeColor;
+  className?: string;
 }
 
-const Typography = React.memo(
-  ({ children, variant = "body1", color = "textDark" }: TypographyProps) => {
+const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
+  ({ children, variant = "body1", color = "textDark", className }, ref) => {
     return (
-      <TextElement $variant={variant} $color={color}>
+      <TextElement
+        ref={ref}
+        className={className}
+        $variant={variant}
+        $color={color}
+      >
         {children}
       </TextElement>
     );
   }
 );
 
-export default Typography;
+export default React.memo(Typography);
 
 const TextElement = styled.p<{
   $variant: TypographyVariant;

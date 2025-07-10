@@ -14,7 +14,6 @@ export default PageContent;
 
 const Container = styled.div`
   max-width: 1440px;
-  /* margin: auto 150px; */
   margin: 0 auto;
   background-color: ${({ theme }) => theme.palette.bgLight};
   min-height: 100vh;
