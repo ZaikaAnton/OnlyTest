@@ -4,7 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { router } from "./router";
 import { theme } from "@/shared/styles/theme";
-import { GlobalStyle } from "@/shared/styles/GlobalStyle";
+import { GlobalStyle } from "@/shared/styles/globalStyle";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
