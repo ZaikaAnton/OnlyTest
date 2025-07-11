@@ -27,23 +27,27 @@ export interface CrossLineHandle {
 const DotsOnCircle = forwardRef<CrossLineHandle, DotsOnCircleProps>(
   ({ topicsWithoutStories, activeTopicId, className, onDotClick }, ref) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const [radius, setRadius] = useState(0);
+    const rotationRef = useRef(0);
     const [rotation, setRotation] = useState(0);
+    const [radius, setRadius] = useState(0);
 
     useImperativeHandle(ref, () => ({
       rotateDots(direction) {
         const angleStep = 360 / topicsWithoutStories.length;
         const delta = direction === "right" ? -angleStep : angleStep;
-        const newRotation = rotation + delta;
+        const newRotation = rotationRef.current + delta;
 
         gsap.to(wrapperRef.current, {
-          rotation: newRotation,
+          rotation: delta,
           duration: 0.6,
           ease: "power2.inOut",
           transformOrigin: "50% 50%",
+          onComplete: () => {
+            gsap.set(wrapperRef.current, { rotation: 0 });
+            rotationRef.current = newRotation;
+            setRotation(newRotation);
+          },
         });
-
-        setRotation(newRotation);
       },
     }));
 
@@ -65,18 +69,19 @@ const DotsOnCircle = forwardRef<CrossLineHandle, DotsOnCircleProps>(
         {topicsWithoutStories.map((topic, index) => {
           const angle = (360 / topicsWithoutStories.length) * index;
           const isActive = topic.id === activeTopicId;
+          const totalAngle = angle + rotation;
 
           return (
             <DotWrapper
               key={topic.id}
               $isActive={isActive}
               style={{
-                transform: `rotate(${angle}deg) translateY(-${radius}px)`,
+                transform: `rotate(${totalAngle}deg) translateY(-${radius}px)`,
               }}
               onClick={() => onDotClick?.(topic)}
             >
               <Dot>
-                <DotId style={{ transform: `rotate(-${angle + rotation}deg)` }}>
+                <DotId style={{ transform: `rotate(-${totalAngle}deg)` }}>
                   {topic.id}
                 </DotId>
               </Dot>

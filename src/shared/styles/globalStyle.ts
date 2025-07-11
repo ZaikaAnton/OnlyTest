@@ -9,7 +9,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     line-height: 1;
-    font-family: Arial, sans-serif;
+    font-family: "PT Sans", sans-serif;
     background: ${({ theme }) => theme.palette.bgLight};
     color: ${({ theme }) => theme.palette.textDark};
   }
